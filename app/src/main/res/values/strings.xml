@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MyChattingApp</string>
-    <string name="button_send">send</string>
+    <string name="button_send">Send</string>
+    <string name="button_singup">sign Up</string>
+    <string name="button_login">Login</string>
+    <string name="button_confirm">Confirm</string>
 </resources>
