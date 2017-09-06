@@ -8,7 +8,7 @@ import android.widget.Button;
 public class LaunchActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button mButtonSignUp;
-    private Button mLoginButton;
+    private Button mButtonLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ public class LaunchActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_launch);
 
         mButtonSignUp = (Button) findViewById(R.id.button_SignUp);
-        mLoginButton = (Button) findViewById(R.id.button_Login);
+        mButtonLogin = (Button) findViewById(R.id.button_Login);
 
     }
 
