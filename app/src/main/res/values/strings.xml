@@ -4,4 +4,5 @@
     <string name="button_singup">sign Up</string>
     <string name="button_login">Login</string>
     <string name="button_confirm">Confirm</string>
+    <string name="button_logout">Logout</string>
 </resources>
