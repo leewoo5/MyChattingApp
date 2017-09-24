@@ -43,7 +43,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         if(mIdEditText.getText().toString() != ""
                 && mPasswordEditText.getText().toString() != "") {
             if(mIsSignUp) {
-
+                // TODO: 2017-09-24  
             } else {
 
             }
