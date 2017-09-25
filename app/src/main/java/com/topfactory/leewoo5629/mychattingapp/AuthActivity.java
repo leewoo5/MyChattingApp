@@ -13,8 +13,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AuthActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private final String CHILD_FRIENDS = "friends";
+    private DatabaseReference mFirebaseDatabaseReference;
+    private FirebaseAuth mAuth;
 
     private EditText mIdEditText;
     private EditText mPasswordEditText;
@@ -22,18 +28,17 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     private String mPageType;
     private Boolean mIsSignUp;
 
-    private FirebaseAuth mAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
         mIdEditText = (EditText) findViewById(R.id.IdEditText);
         mPasswordEditText = (EditText) findViewById(R.id.PasswordEditText);
         mConfirm = (Button) findViewById(R.id.button_confirm);
-
-        mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         Boolean isSignUp = intent.getBooleanExtra("isSignUp", false);
@@ -63,6 +68,10 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                         if (task.isSuccessful()) {
                             Toast.makeText(AuthActivity.this, "Authentication Success.",
                                     Toast.LENGTH_SHORT).show();
+
+                            Friend friend = new Friend(mIdEditText.getText().toString());
+                            mFirebaseDatabaseReference.child(CHILD_FRIENDS).push().setValue(friend);
+
                             startActivity(new Intent(AuthActivity.this, FriendActivity.class));
 
                         } else {
