@@ -1,4 +1,5 @@
 "# MyChattingApp"
 it is my first ChattingApp.
 using firebase.
-login, sign up module added 
+login, sign up module added.
+friends list added
