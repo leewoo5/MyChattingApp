@@ -1,5 +1,6 @@
 package com.topfactory.leewoo5629.mychattingapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,37 +28,71 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEditText;
     private Button mButton;
     private DatabaseReference mFirebaseDatabaseReference;
+    private ArrayAdapter<String> mAdapter;
+    private String mEmail;
+    private String mKey;
+    private String mMyKey;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        getDataFromIntent();
+        setFirebase();
+        connectView();
+        setListView();
+        setSendButton();
+        setChildEvent();
+    }
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        mEmail = intent.getStringExtra("email");
+        mKey = intent.getStringExtra("key");
+        mMyKey = intent.getStringExtra("myKey");
 
+    }
+    private void setFirebase() {
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+    }
+    private void connectView() {
         mListView = (ListView) findViewById(listView);
         mEditText = (EditText) findViewById(R.id.editText);
         mButton = (Button) findViewById(R.id.sendButton);
-
-//        String[] samples = {"test1", "test2", "test3"};
+    }
+    private void setListView() {
         ArrayList<String> samples = new ArrayList<>();
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, samples);
-        mListView.setAdapter(adapter);
-
+        mAdapter = new ArrayAdapter<String>(this, R.layout.list_item, samples);
+        mListView.setAdapter(mAdapter);
+    }
+    private void setSendButton() {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Message message = new Message("leewoo5", mEditText.getText().toString());
+                Message message = new Message(
+                        mMyKey,
+                        mKey,
+                        mEditText.getText().toString());
                 mFirebaseDatabaseReference.child(CHILD_MESSAGES).push().setValue(message);
                 mEditText.setText("");
             }
         });
-
+    }
+    private void setChildEvent() {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Message message = dataSnapshot.getValue(Message.class);
-                adapter.add(message.getText());
+                boolean isSent = message.getSender().equals(mMyKey) && message.getRecevier().equals(mKey);
+                boolean isReceived = message.getSender().equals(mKey) && message.getRecevier().equals(mMyKey);
+                if(isSent || isReceived) {
+                    if(isSent) {
+                        mAdapter.add(message.getText());
+                    } else {
+                        mAdapter.add(mEmail + " : " + message.getText());
+                    }
+                }
             }
 
             @Override

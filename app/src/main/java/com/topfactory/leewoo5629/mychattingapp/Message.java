@@ -7,15 +7,17 @@ package com.topfactory.leewoo5629.mychattingapp;
 public class Message {
     private String id;
     private String sender;
+    private String recevier;
     private String text;
 
     public Message() {
 
     }
 
-    public Message(String sender, String text) {
+    public Message(String sender, String recevier, String text) {
         this.sender = sender;
         this.text = text;
+        this.recevier = recevier;
     }
 
 
@@ -42,4 +44,8 @@ public class Message {
     public void setText(String text) {
         this.text = text;
     }
+
+    public String getRecevier() {return recevier;}
+
+    public void setRecevier(String recevier) {this.recevier = recevier;}
 }
